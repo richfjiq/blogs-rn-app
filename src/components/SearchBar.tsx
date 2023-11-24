@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
+
 import { useBlogs } from '../store/blogs';
 import { useDebounce } from '../hooks';
 
@@ -47,7 +48,7 @@ const SearchBar: FC = () => {
         height: 40,
       }}
     >
-      <FontAwesome name="search" size={18} color="black" />
+      <FontAwesome name="search" size={18} color="#7692a0" />
       <TouchableOpacity
         onPress={() => {
           setSearchStatus(true);
@@ -109,12 +110,13 @@ const SearchBar: FC = () => {
       <FontAwesome
         name="search"
         size={18}
-        color="black"
+        color="#7692a0"
         style={{ position: 'absolute', left: 10 }}
       />
       <TextInput
         style={{
           borderWidth: 1,
+          borderColor: '#7692a0',
           flex: 1,
           height: 40,
           borderRadius: 10,
@@ -131,7 +133,7 @@ const SearchBar: FC = () => {
         }}
         activeOpacity={0.9}
       >
-        <AntDesign name="closecircle" size={22} color="black" />
+        <AntDesign name="closecircle" size={22} color="#7692a0" />
       </TouchableOpacity>
     </View>
   );
@@ -141,6 +143,7 @@ const SearchBar: FC = () => {
       style={{
         width: Dimensions.get('window').width,
         padding: 20,
+        paddingBottom: 10,
       }}
     >
       {activeSearch ? searchField() : buttonsSearch()}

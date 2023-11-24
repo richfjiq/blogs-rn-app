@@ -1,20 +1,23 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
+  Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
-import { BlogCard, SearchBar } from '../src/components';
+import { BlogCard, CreateBlog, SearchBar } from '../src/components';
 import { useBlogs } from '../src/store/blogs/hooks';
 import { useWifiStatus } from '../src/hooks';
 
 const Home = () => {
   useWifiStatus();
   const { getBlogs, blogs, loading, activeSearch, blogSearch } = useBlogs();
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   useEffect(() => {
     getBlogs();
@@ -52,8 +55,29 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, width: Dimensions.get('window').width }}>
+    <SafeAreaView style={{ width: Dimensions.get('window').width }}>
       {blogs && <SearchBar />}
+      <View
+        style={{
+          justifyContent: 'center',
+          paddingBottom: 20,
+          alignItems: 'center',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            borderRadius: 10,
+            backgroundColor: '#7692a0',
+          }}
+          onPress={() => setModalIsVisible(true)}
+        >
+          <Text style={{ color: '#ffffff', fontWeight: '500' }}>
+            Agregar artículo
+          </Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={activeSearch ? blogSearch : blogs}
         renderItem={({ item }) => (
@@ -70,6 +94,10 @@ const Home = () => {
         style={{ padding: 20, paddingTop: 5 }}
         contentContainerStyle={{ paddingBottom: 40 }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      />
+      <CreateBlog
+        modalIsVisible={modalIsVisible}
+        closeModal={() => setModalIsVisible(false)}
       />
     </SafeAreaView>
   );
