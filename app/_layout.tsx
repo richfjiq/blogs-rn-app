@@ -14,8 +14,8 @@ const StackLayout = () => {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ headerTitle: 'Users' }} />
-      <Stack.Screen name="blog/[blogId]" options={{ headerTitle: 'User' }} />
+      <Stack.Screen name="index" options={{ headerTitle: 'The Blog' }} />
+      <Stack.Screen name="blog/[blogId]" options={{ headerTitle: 'Blog' }} />
     </Stack>
   );
 };

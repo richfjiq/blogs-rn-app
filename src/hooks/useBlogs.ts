@@ -4,19 +4,20 @@ import { isAxiosError } from 'axios';
 import NetInfo from '@react-native-community/netinfo';
 
 import { blogsApi } from '../api';
-import { Blog, BlogsResponse } from '../interfaces';
+import { Blog } from '../interfaces';
 
 export const useBlogs = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const url = 'https://reqres.in/api';
 
   const getUser = useCallback(async (blogId: string) => {
+    console.log({ blogId });
     try {
       setLoading(true);
-      const resp = await blogsApi.get<Blog>(`/:${blogId}`);
+      const resp = await blogsApi.get<Blog>(`/blogs/${blogId}`);
+      console.log('resp ----------------', resp);
       setBlog(resp.data);
       setLoading(false);
     } catch (error) {
@@ -31,8 +32,8 @@ export const useBlogs = () => {
   const getUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const resp = await blogsApi.get<BlogsResponse>(`/blogs`);
-      setBlogs(resp.data.data);
+      const resp = await blogsApi.get<Blog[]>('/blogs');
+      setBlogs(resp.data);
       setLoading(false);
     } catch (error) {
       if (isAxiosError(error)) {
@@ -50,10 +51,6 @@ export const useBlogs = () => {
   }, [blogs]);
 
   useEffect(() => {
-    getUsers();
-  }, []);
-
-  useEffect(() => {
     saveToLocalStorage();
   }, []);
 
@@ -63,5 +60,6 @@ export const useBlogs = () => {
     blogs,
     error,
     getUser,
+    getUsers,
   };
 };

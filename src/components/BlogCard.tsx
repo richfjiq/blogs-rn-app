@@ -1,6 +1,7 @@
 import { Link } from 'expo-router';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
+import { useBlogs } from '../hooks/useBlogs';
 
 interface Props {
   _id: string;
@@ -19,11 +20,27 @@ const BlogCard: FC<Props> = ({
   description,
   image_url,
 }) => {
+  const { getUser } = useBlogs();
+
+  useEffect(() => {
+    getUser(_id);
+  }, [_id]);
+
   return (
-    <Link href={`blogs/${_id}`}>
-      <View>
+    <Link href={`blog/:${_id}`}>
+      <View
+        style={{
+          borderColor: 'red',
+          borderWidth: 2,
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
         <View>
-          <Image source={{ uri: image_url }} />
+          <Image
+            source={{ uri: image_url }}
+            style={{ width: 120, height: 120 }}
+          />
         </View>
         <View>
           <Text>{title}</Text>
