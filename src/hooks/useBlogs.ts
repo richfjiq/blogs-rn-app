@@ -1,41 +1,67 @@
 import { useCallback, useEffect, useState } from 'react';
-import { blogsApi } from '../api';
-import { User, UserResponse, UsersResponse } from '../interfaces';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { isAxiosError } from 'axios';
+import NetInfo from '@react-native-community/netinfo';
+
+import { blogsApi } from '../api';
+import { Blog, BlogsResponse } from '../interfaces';
 
 export const useBlogs = () => {
-  const [page, setPage] = useState(1);
-  const [users, setUsers] = useState<User[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const url = 'https://reqres.in/api';
 
-  const getUsers = useCallback(async () => {
-    if (page > 2) return;
-
+  const getUser = useCallback(async (blogId: string) => {
     try {
       setLoading(true);
-      const resp = await blogsApi.get<UsersResponse>(`${url}/users?page=${1}`);
-      setUsers(resp.data.data);
+      const resp = await blogsApi.get<Blog>(`${blogId}`);
+      setBlog(resp.data);
       setLoading(false);
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error.response.data);
+        console.info(error.config);
         setError(true);
         setLoading(false);
       }
     }
-  }, [page]);
+  }, []);
+
+  const getUsers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const resp = await blogsApi.get<BlogsResponse>(`${url}/users?page=${1}`);
+      setBlogs(resp.data.data);
+      setLoading(false);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.info(error.config);
+        setError(true);
+        setLoading(false);
+      }
+    }
+  }, []);
+
+  const saveToLocalStorage = useCallback(async () => {
+    if (blogs) {
+      await AsyncStorage.setItem('blogs', JSON.stringify(blogs));
+    }
+  }, [blogs]);
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    saveToLocalStorage();
+  }, []);
 
   return {
     loading,
-    users,
+    blog,
+    blogs,
     error,
+    getUser,
   };
 };

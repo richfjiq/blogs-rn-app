@@ -1,13 +1,9 @@
-export interface BlogResponse {
-  data: Blog;
-}
-
 export interface BlogsResponse {
   data: Blog[];
 }
 
 export interface Blog {
-  id: string;
+  _id: string;
   title: string;
   author: string;
   description: string;
