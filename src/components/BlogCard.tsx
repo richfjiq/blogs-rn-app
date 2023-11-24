@@ -23,13 +23,28 @@ const BlogCard: FC<Props> = ({
   const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   return (
-    <Link href={`blog/${_id}`}>
+    <Link
+      href={`blog/${_id}`}
+      style={{
+        shadowColor: '#e3dcdc',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+      }}
+    >
       <View
         style={{
+          backgroundColor: '#ffffff',
           flexDirection: 'column',
           borderRadius: 10,
           alignItems: 'center',
           borderWidth: 1,
+          borderColor: '#878585',
         }}
       >
         <View
@@ -89,7 +104,7 @@ const BlogCard: FC<Props> = ({
               fontWeight: '400',
             }}
           >
-            {description.slice(0, 100)}... Leer más
+            {description.slice(0, 70)}... Leer más
           </Text>
         </View>
       </View>

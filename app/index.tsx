@@ -7,14 +7,16 @@ import {
   View,
 } from 'react-native';
 
-import { useBlogs } from '../src/hooks/useBlogs';
+// import { useBlogs } from '../src/hooks/useBlogs';
 import { BlogCard } from '../src/components';
+import { useBlogs } from '../src/store/blogs/hooks';
 
 const Home = () => {
-  const { blogs, loading, getUsers } = useBlogs();
+  // const { blogs, loading, getBlogs, checkLocalStorage } = useBlogs();
+  const { getBlogs, blogs, loading } = useBlogs();
 
   useEffect(() => {
-    getUsers();
+    getBlogs();
   }, []);
 
   if (loading) {
@@ -28,7 +30,7 @@ const Home = () => {
           alignItems: 'center',
         }}
       >
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#7692a0" />
       </View>
     );
   }

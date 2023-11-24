@@ -8,19 +8,15 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { useBlogs } from '../hooks/useBlogs';
 import moment from 'moment';
+import { Blog } from '../interfaces';
+import { useBlogs } from '../store/blogs';
 
-interface Props {
-  id: string;
-}
+const BlogDetailsCard: FC = () => {
+  const { blog } = useBlogs();
+  const { title, image_url, author, description, createdAt } = blog as Blog;
 
-const BlogDetailsCard: FC<Props> = ({ id }) => {
-  const { getUser, blog, loading } = useBlogs();
-
-  useEffect(() => {
-    getUser(id);
-  }, [id]);
+  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   if (!blog) {
     return (
@@ -33,14 +29,10 @@ const BlogDetailsCard: FC<Props> = ({ id }) => {
           alignItems: 'center',
         }}
       >
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#7692a0" />
       </View>
     );
   }
-
-  const { title, image_url, author, description, createdAt } = blog;
-
-  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   return (
     <ScrollView>
