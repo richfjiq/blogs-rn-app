@@ -16,7 +16,7 @@ export const useBlogs = () => {
   const getUser = useCallback(async (blogId: string) => {
     try {
       setLoading(true);
-      const resp = await blogsApi.get<Blog>(`${blogId}`);
+      const resp = await blogsApi.get<Blog>(`/:${blogId}`);
       setBlog(resp.data);
       setLoading(false);
     } catch (error) {
@@ -31,7 +31,7 @@ export const useBlogs = () => {
   const getUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const resp = await blogsApi.get<BlogsResponse>(`${url}/users?page=${1}`);
+      const resp = await blogsApi.get<BlogsResponse>(`/blogs`);
       setBlogs(resp.data.data);
       setLoading(false);
     } catch (error) {
