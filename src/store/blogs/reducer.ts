@@ -1,4 +1,5 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
 import { getBlog, getBlogs } from './actions';
 import { Blog } from '../../interfaces';
 
@@ -27,6 +28,7 @@ const blogsStore = createSlice({
 
     builders.addCase(getBlogs.fulfilled, (state, { payload }) => {
       state.loading = false;
+      payload as Blog[];
       state.blogs = payload as Blog[];
     });
 

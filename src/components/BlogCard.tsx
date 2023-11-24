@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'expo-router';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, Platform } from 'react-native';
 import moment from 'moment';
 
 interface Props {
@@ -50,14 +50,20 @@ const BlogCard: FC<Props> = ({
         <View
           style={{
             borderRadius: 10,
-            width: Dimensions.get('window').width - 40,
+            width:
+              Platform.OS === 'ios'
+                ? Dimensions.get('window').width - 40
+                : '100%',
             padding: 10,
           }}
         >
           <Image
             source={{ uri: image_url }}
             style={{
-              width: Dimensions.get('window').width - 60,
+              width:
+                Platform.OS === 'ios'
+                  ? Dimensions.get('window').width - 60
+                  : Dimensions.get('window').width,
               height: 170,
               borderRadius: 10,
             }}

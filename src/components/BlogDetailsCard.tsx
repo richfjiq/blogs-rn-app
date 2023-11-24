@@ -14,9 +14,6 @@ import { useBlogs } from '../store/blogs';
 
 const BlogDetailsCard: FC = () => {
   const { blog } = useBlogs();
-  const { title, image_url, author, description, createdAt } = blog as Blog;
-
-  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   if (!blog) {
     return (
@@ -33,6 +30,10 @@ const BlogDetailsCard: FC = () => {
       </View>
     );
   }
+
+  const { title, image_url, author, description, createdAt } = blog as Blog;
+
+  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   return (
     <ScrollView>

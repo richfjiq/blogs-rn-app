@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ActivityIndicator,
   Dimensions,
@@ -7,17 +8,34 @@ import {
   View,
 } from 'react-native';
 
-// import { useBlogs } from '../src/hooks/useBlogs';
-import { BlogCard } from '../src/components';
+import { BlogCard, SearchBar } from '../src/components';
 import { useBlogs } from '../src/store/blogs/hooks';
+import { useWifiStatus } from '../src/hooks';
 
 const Home = () => {
-  // const { blogs, loading, getBlogs, checkLocalStorage } = useBlogs();
   const { getBlogs, blogs, loading } = useBlogs();
+  useWifiStatus();
 
   useEffect(() => {
     getBlogs();
   }, []);
+
+  const checkLocalStorage = useCallback(async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('blogs');
+      const blogs = JSON.parse(jsonValue ?? '');
+      console.log({ blogs });
+    } catch (error) {
+      console.info(error);
+    }
+    await AsyncStorage.setItem('blogs', JSON.stringify(blogs));
+  }, []);
+
+  useEffect(() => {
+    checkLocalStorage();
+  }, []);
+
+  useEffect(() => {}, []);
 
   if (loading) {
     return (
@@ -37,6 +55,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, width: Dimensions.get('window').width }}>
+      {blogs && <SearchBar />}
       <FlatList
         data={blogs}
         renderItem={({ item }) => (
