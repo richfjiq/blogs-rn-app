@@ -1,45 +1,121 @@
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { FC, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import { useBlogs } from '../hooks/useBlogs';
+import moment from 'moment';
 
 interface Props {
-  _id: string;
-  title: string;
-  author: string;
-  createdAt: string;
-  description: string;
-  image_url: string;
+  id: string;
 }
 
-const BlogDetailsCard: FC<Props> = ({
-  _id,
-  title,
-  author,
-  createdAt,
-  description,
-  image_url,
-}) => {
-  const { getUser } = useBlogs();
+const BlogDetailsCard: FC<Props> = ({ id }) => {
+  const { getUser, blog, loading } = useBlogs();
 
   useEffect(() => {
-    getUser(_id);
-  }, [_id]);
+    getUser(id);
+  }, [id]);
+
+  if (!blog) {
+    return (
+      <View
+        style={{
+          height: Dimensions.get('window').height - 150,
+          width: Dimensions.get('window').width,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  const { title, image_url, author, description, createdAt } = blog;
+
+  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   return (
-    <Link href={`blogs/${_id}`}>
-      <View>
-        <View>
-          <Image source={{ uri: image_url }} />
+    <ScrollView>
+      <View
+        style={{
+          flexDirection: 'column',
+          borderRadius: 10,
+          alignItems: 'center',
+          marginBottom: 40,
+        }}
+      >
+        <View
+          style={{
+            borderRadius: 10,
+            width: Dimensions.get('window').width,
+            padding: 20,
+            paddingBottom: 0,
+          }}
+        >
+          <Image
+            source={{ uri: image_url }}
+            style={{
+              width: Dimensions.get('window').width - 40,
+              height: 200,
+              borderRadius: 10,
+            }}
+          />
         </View>
-        <View>
-          <Text>{title}</Text>
-          <Text>{author}</Text>
-          <Text>{createdAt}</Text>
-          <Text>{description}</Text>
+        <View
+          style={{
+            width: '100%',
+            padding: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '700',
+              marginBottom: 5,
+            }}
+          >
+            {title}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              marginBottom: 3,
+              fontStyle: 'italic',
+            }}
+          >
+            {author}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              marginBottom: 10,
+              fontStyle: 'italic',
+            }}
+          >
+            {date}
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '400',
+              textAlign: 'justify',
+            }}
+          >
+            {description}
+          </Text>
         </View>
       </View>
-    </Link>
+    </ScrollView>
   );
 };
 

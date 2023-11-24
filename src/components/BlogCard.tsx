@@ -21,8 +21,9 @@ const BlogCard: FC<Props> = ({
   image_url,
 }) => {
   const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
+
   return (
-    <Link href={`blog/:${_id}`}>
+    <Link href={`blog/${_id}`}>
       <View
         style={{
           flexDirection: 'column',
