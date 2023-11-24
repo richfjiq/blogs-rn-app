@@ -13,8 +13,8 @@ import { useBlogs } from '../src/store/blogs/hooks';
 import { useWifiStatus } from '../src/hooks';
 
 const Home = () => {
-  const { getBlogs, blogs, loading } = useBlogs();
   useWifiStatus();
+  const { getBlogs, blogs, loading, activeSearch, blogSearch } = useBlogs();
 
   useEffect(() => {
     getBlogs();
@@ -34,8 +34,6 @@ const Home = () => {
   useEffect(() => {
     checkLocalStorage();
   }, []);
-
-  useEffect(() => {}, []);
 
   if (loading) {
     return (
@@ -57,7 +55,7 @@ const Home = () => {
     <SafeAreaView style={{ flex: 1, width: Dimensions.get('window').width }}>
       {blogs && <SearchBar />}
       <FlatList
-        data={blogs}
+        data={activeSearch ? blogSearch : blogs}
         renderItem={({ item }) => (
           <BlogCard
             _id={item._id}
@@ -69,7 +67,7 @@ const Home = () => {
           />
         )}
         keyExtractor={(item) => item._id}
-        style={{ padding: 20 }}
+        style={{ padding: 20, paddingTop: 5 }}
         contentContainerStyle={{ paddingBottom: 40 }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
       />

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getBlog, getBlogs } from './actions';
+import { getBlog, getBlogs, setBlogSearch, setSearchStatus } from './actions';
 import { Blog } from '../../interfaces';
 
 interface InitialState {
@@ -8,6 +8,8 @@ interface InitialState {
   error: boolean;
   blogs: Blog[];
   blog: Blog | null;
+  blogSearch: Blog[];
+  activeSearch: boolean;
 }
 
 const initialState: InitialState = {
@@ -15,6 +17,8 @@ const initialState: InitialState = {
   error: false,
   blogs: [],
   blog: null,
+  blogSearch: [],
+  activeSearch: false,
 };
 
 const blogsStore = createSlice({
@@ -43,6 +47,14 @@ const blogsStore = createSlice({
       console.log({ blog });
       state.blog = blog;
       state.loading = false;
+    });
+
+    builders.addCase(setBlogSearch, (state, { payload }) => {
+      state.blogSearch = payload;
+    });
+
+    builders.addCase(setSearchStatus, (state, { payload }) => {
+      state.activeSearch = payload;
     });
   },
 });

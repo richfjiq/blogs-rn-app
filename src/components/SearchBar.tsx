@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Dimensions,
   Text,
@@ -7,10 +7,36 @@ import {
   View,
 } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { useBlogs } from '../store/blogs';
+import { useDebounce } from '../hooks';
+
+type Keys = 'title' | 'author' | 'description' | '';
 
 const SearchBar: FC = () => {
-  const [search, setSearch] = useState(false);
-  const [keySearch, setKeySearch] = useState('');
+  const { blogs, setBlogSearch, setSearchStatus, activeSearch } = useBlogs();
+  const [keySearch, setKeySearch] = useState<Keys>('');
+  const [term, setTerm] = useState('');
+  const debouncedSearch = useDebounce(term, 300);
+
+  console.log({ debouncedSearch });
+  console.log({ keySearch });
+
+  const searchByTerm = useCallback(() => {
+    const search = blogs.filter((blog) => {
+      console.log({ blog });
+      if (keySearch === '') return blog;
+
+      return blog[keySearch]
+        .toLowerCase()
+        .includes(debouncedSearch.toLowerCase());
+    });
+    console.log({ search });
+    setBlogSearch(search);
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    searchByTerm();
+  }, [debouncedSearch]);
 
   const buttonsSearch = () => (
     <View
@@ -24,7 +50,7 @@ const SearchBar: FC = () => {
       <FontAwesome name="search" size={18} color="black" />
       <TouchableOpacity
         onPress={() => {
-          setSearch(true);
+          setSearchStatus(true);
           setKeySearch('author');
         }}
         style={{
@@ -39,7 +65,7 @@ const SearchBar: FC = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          setSearch(true);
+          setSearchStatus(true);
           setKeySearch('description');
         }}
         style={{
@@ -56,7 +82,7 @@ const SearchBar: FC = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          setSearch(true);
+          setSearchStatus(true);
           setKeySearch('title');
         }}
         style={{
@@ -94,12 +120,14 @@ const SearchBar: FC = () => {
           borderRadius: 10,
           paddingLeft: 35,
         }}
+        onChangeText={setTerm}
       />
       <TouchableOpacity
         style={{ position: 'absolute', right: 10 }}
         onPress={() => {
-          setSearch(false);
+          setSearchStatus(false);
           setKeySearch('');
+          setBlogSearch(blogs);
         }}
         activeOpacity={0.9}
       >
@@ -113,10 +141,9 @@ const SearchBar: FC = () => {
       style={{
         width: Dimensions.get('window').width,
         padding: 20,
-        paddingBottom: 0,
       }}
     >
-      {search ? searchField() : buttonsSearch()}
+      {activeSearch ? searchField() : buttonsSearch()}
     </View>
   );
 };

@@ -6,7 +6,10 @@ import { RootState } from '../store';
 import {
   getBlogs as getBlogsAction,
   getBlog as getBlogAction,
+  setBlogSearch as setBlogSearchAction,
+  setSearchStatus as setSearchStatusAction,
 } from './actions';
+import { Blog } from '../../interfaces';
 
 export const useBlogs = () => {
   const blogsState = useAppSelector(
@@ -26,9 +29,25 @@ export const useBlogs = () => {
     [dispatch]
   );
 
+  const setBlogSearch = useCallback(
+    (blogs: Blog[]) => {
+      dispatch(setBlogSearchAction(blogs));
+    },
+    [dispatch]
+  );
+
+  const setSearchStatus = useCallback(
+    (isActive: boolean) => {
+      dispatch(setSearchStatusAction(isActive));
+    },
+    [dispatch]
+  );
+
   return {
     ...blogsState,
     getBlogs,
     getBlog,
+    setBlogSearch,
+    setSearchStatus,
   };
 };

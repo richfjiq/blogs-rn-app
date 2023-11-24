@@ -6,6 +6,8 @@ import { Blog } from '../../interfaces';
 
 const GET_BLOGS = 'blogs/GET_BLOGS';
 const GET_BLOG = 'blogs/GET_BLOG';
+const SET_BLOG_SEARCH = 'blogs/SET_BLOG_SEARCH';
+const SET_SEARCH_STATUS = 'blogs/SET_SEARCH_STATUS';
 
 export const getBlogs = createAsyncThunk(
   GET_BLOGS,
@@ -25,3 +27,18 @@ export const getBlog = createAction(GET_BLOG, (blogId: string) => {
     payload: blogId,
   };
 });
+
+export const setBlogSearch = createAction(SET_BLOG_SEARCH, (blogs: Blog[]) => {
+  return {
+    payload: blogs,
+  };
+});
+
+export const setSearchStatus = createAction(
+  SET_SEARCH_STATUS,
+  (isActive: boolean) => {
+    return {
+      payload: isActive,
+    };
+  }
+);
