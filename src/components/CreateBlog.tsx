@@ -12,10 +12,20 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { blogValidation } from '../utils';
 
 interface Props {
   modalIsVisible: boolean;
   closeModal: () => void;
+}
+
+interface BlogForm {
+  title: string;
+  author: string;
+  description: string;
+  image_url?: string;
 }
 
 const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
@@ -23,14 +33,31 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+    resetField,
+    clearErrors,
+  } = useForm<BlogForm>({
     defaultValues: {
       title: '',
       author: '',
       description: '',
       image_url: '',
     },
+    resolver: yupResolver(blogValidation),
   });
+
+  const onSubmit = (data: BlogForm) => {
+    console.log({ data });
+    resetField('title');
+    resetField('author');
+    resetField('description');
+    resetField('image_url');
+    console.log({ errors });
+  };
+
+  const closeForm = () => {
+    closeModal();
+    clearErrors(['title', 'author', 'description', 'image_url']);
+  };
 
   return (
     <Modal
@@ -53,7 +80,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
           <View>
             <TouchableOpacity
               style={{ position: 'absolute', right: 10 }}
-              onPress={() => closeModal()}
+              onPress={closeForm}
               activeOpacity={0.9}
             >
               <AntDesign name="closecircle" size={30} color="#7692a0" />
@@ -262,6 +289,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                   elevation: 3,
                 }}
                 activeOpacity={0.9}
+                onPress={handleSubmit(onSubmit)}
               >
                 <Text
                   style={{
