@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  View,
+} from 'react-native';
 
 import { useBlogs } from '../src/hooks/useBlogs';
 import { BlogCard } from '../src/components';
@@ -15,8 +21,8 @@ const Home = () => {
     return (
       <View
         style={{
-          height: '100%',
-          width: '100%',
+          height: Dimensions.get('window').height - 150,
+          width: Dimensions.get('window').width,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -28,7 +34,7 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, width: Dimensions.get('window').width }}>
       <FlatList
         data={blogs}
         renderItem={({ item }) => (
@@ -43,6 +49,8 @@ const Home = () => {
         )}
         keyExtractor={(item) => item._id}
         style={{ padding: 20 }}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
       />
     </SafeAreaView>
   );

@@ -1,7 +1,7 @@
+import { FC } from 'react';
 import { Link } from 'expo-router';
-import { FC, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
-import { useBlogs } from '../hooks/useBlogs';
+import { View, Text, Image, Dimensions } from 'react-native';
+import moment from 'moment';
 
 interface Props {
   _id: string;
@@ -20,33 +20,76 @@ const BlogCard: FC<Props> = ({
   description,
   image_url,
 }) => {
-  const { getUser } = useBlogs();
-
-  useEffect(() => {
-    getUser(_id);
-  }, [_id]);
-
+  const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
   return (
     <Link href={`blog/:${_id}`}>
       <View
         style={{
-          borderColor: 'red',
-          borderWidth: 2,
-          display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
+          borderRadius: 10,
+          alignItems: 'center',
+          borderWidth: 1,
         }}
       >
-        <View>
+        <View
+          style={{
+            borderRadius: 10,
+            width: Dimensions.get('window').width - 40,
+            padding: 10,
+          }}
+        >
           <Image
             source={{ uri: image_url }}
-            style={{ width: 120, height: 120 }}
+            style={{
+              width: Dimensions.get('window').width - 60,
+              height: 170,
+              borderRadius: 10,
+            }}
           />
         </View>
-        <View>
-          <Text>{title}</Text>
-          <Text>{author}</Text>
-          <Text>{createdAt}</Text>
-          <Text>{description.slice(0, 20)}...</Text>
+        <View
+          style={{
+            width: '100%',
+            padding: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: '700',
+              marginBottom: 3,
+            }}
+          >
+            {title}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              marginBottom: 2,
+              fontStyle: 'italic',
+            }}
+          >
+            {author}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              marginBottom: 5,
+              fontStyle: 'italic',
+            }}
+          >
+            {date}
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '400',
+            }}
+          >
+            {description.slice(0, 100)}... Leer más
+          </Text>
         </View>
       </View>
     </Link>
