@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#878585',
+    borderColor: '#7692a0',
     width: Dimensions.get('window').width - 40,
   },
   imageContainer: {
