@@ -2,9 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    paddingBottom: 20,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 40,
   },
   buttonContainer: {
     paddingHorizontal: 10,

@@ -1,21 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useBlogs } from '../../store/blogs';
 import { useDebounce } from '../../hooks';
 import { SearchButtons } from '../SearchButtons';
 import { SearchInput } from '../SearchInput';
+import { styles } from './SearchBar.style';
 
 type Keys = 'title' | 'author' | 'description' | '';
 
 const SearchBar: FC = () => {
-  const {
-    blogs,
-    setBlogSearch,
-    setSearchStatus,
-    activeSearch,
-    internetService,
-  } = useBlogs();
+  const { blogs, setBlogSearch, setSearchStatus, activeSearch } = useBlogs();
   const [keySearch, setKeySearch] = useState<Keys>('');
   const [term, setTerm] = useState('');
   const debouncedSearch = useDebounce(term, 300);
@@ -36,13 +31,7 @@ const SearchBar: FC = () => {
   }, [debouncedSearch]);
 
   return (
-    <View
-      style={{
-        width: Dimensions.get('window').width,
-        padding: 20,
-        paddingBottom: 10,
-      }}
-    >
+    <View style={styles.container}>
       {activeSearch ? (
         <SearchInput
           setKeySearch={setKeySearch}

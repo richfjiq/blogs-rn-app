@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Link } from 'expo-router';
-import { View, Text, Image, Dimensions, Platform } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import moment from 'moment';
+
+import { styles } from './BlogCard.style';
 
 interface Props {
   _id: string;
@@ -23,93 +25,16 @@ const BlogCard: FC<Props> = ({
   const date = moment(new Date(createdAt)).format('MM-DD-YYYY');
 
   return (
-    <Link
-      href={`blog/${_id}`}
-      style={{
-        shadowColor: '#e3dcdc',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      }}
-    >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-          flexDirection: 'column',
-          borderRadius: 10,
-          alignItems: 'center',
-          borderWidth: 1,
-          borderColor: '#878585',
-          width: Dimensions.get('window').width - 40,
-        }}
-      >
-        <View
-          style={{
-            borderRadius: 10,
-            width:
-              Platform.OS === 'ios'
-                ? Dimensions.get('window').width - 40
-                : Dimensions.get('window').width,
-            padding: 10,
-          }}
-        >
-          <Image
-            source={{ uri: image_url }}
-            style={{
-              width:
-                Platform.OS === 'ios'
-                  ? Dimensions.get('window').width - 60
-                  : Dimensions.get('window').width,
-              height: 170,
-              borderRadius: 10,
-            }}
-          />
+    <Link href={`blog/${_id}`} style={styles.link}>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image_url }} style={styles.image} />
         </View>
-        <View
-          style={{
-            width: '100%',
-            padding: 10,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '700',
-              marginBottom: 3,
-            }}
-          >
-            {title}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: '400',
-              marginBottom: 2,
-              fontStyle: 'italic',
-            }}
-          >
-            {author}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: '400',
-              marginBottom: 5,
-              fontStyle: 'italic',
-            }}
-          >
-            {date}
-          </Text>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: '400',
-            }}
-          >
+        <View style={styles.bodyContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.author}>{author}</Text>
+          <Text style={styles.date}>{date}</Text>
+          <Text style={styles.description}>
             {description.slice(0, 70)}... Leer más
           </Text>
         </View>

@@ -18,6 +18,7 @@ import { blogValidation } from '../../utils';
 import { useBlogs } from '../../store/blogs';
 import { BlogForm } from '../../interfaces';
 import Loading from '../Loading/Loading';
+import { styles } from './CreateBlog.style';
 
 interface Props {
   modalIsVisible: boolean;
@@ -75,48 +76,23 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{
-          backgroundColor: '#fff',
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
-          padding: 20,
-          paddingTop: Platform.OS === 'ios' ? 60 : 15,
-        }}
+        style={styles.container}
       >
         <ScrollView>
           <View>
             <TouchableOpacity
-              style={{ position: 'absolute', right: 10 }}
+              style={styles.iconContainer}
               onPress={closeForm}
               activeOpacity={0.9}
             >
               <AntDesign name="closecircle" size={30} color="#7692a0" />
             </TouchableOpacity>
           </View>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: '700',
-              textAlign: 'center',
-              marginTop: 50,
-              color: '#617c89',
-            }}
-          >
-            Agregar artículo
-          </Text>
+          <Text style={styles.headerTitle}>Agregar artículo</Text>
 
-          <View style={{ marginTop: 40 }}>
-            <View style={{ marginBottom: 30 }}>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 18,
-                  fontWeight: '600',
-                  color: '#617c89',
-                }}
-              >
-                Título
-              </Text>
+          <View style={styles.form}>
+            <View style={styles.rowInputContainer}>
+              <Text style={styles.labelInput}>Título</Text>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -125,38 +101,18 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    style={{
-                      borderWidth: 1,
-                      borderColor: '#617c89',
-                      flex: 1,
-                      height: 40,
-                      borderRadius: 10,
-                      paddingHorizontal: 15,
-                    }}
+                    style={styles.input}
                   />
                 )}
                 name="title"
               />
               {errors.title && (
-                <Text
-                  style={{ position: 'absolute', bottom: -25, color: 'red' }}
-                >
-                  Campo requerido.
-                </Text>
+                <Text style={styles.errorText}>Campo requerido.</Text>
               )}
             </View>
 
-            <View style={{ marginBottom: 30 }}>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 18,
-                  fontWeight: '600',
-                  color: '#617c89',
-                }}
-              >
-                Autor
-              </Text>
+            <View style={styles.rowInputContainer}>
+              <Text style={styles.labelInput}>Autor</Text>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -165,38 +121,18 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    style={{
-                      borderWidth: 1,
-                      borderColor: '#617c89',
-                      flex: 1,
-                      height: 40,
-                      borderRadius: 10,
-                      paddingHorizontal: 15,
-                    }}
+                    style={styles.input}
                   />
                 )}
                 name="author"
               />
               {errors.author && (
-                <Text
-                  style={{ position: 'absolute', bottom: -25, color: 'red' }}
-                >
-                  Campo requerido.
-                </Text>
+                <Text style={styles.errorText}>Campo requerido.</Text>
               )}
             </View>
 
-            <View style={{ marginBottom: 30 }}>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 18,
-                  fontWeight: '600',
-                  color: '#617c89',
-                }}
-              >
-                Contenido
-              </Text>
+            <View style={styles.rowInputContainer}>
+              <Text style={styles.labelInput}>Contenido</Text>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -205,14 +141,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    style={{
-                      borderWidth: 1,
-                      borderColor: '#617c89',
-                      flex: 1,
-                      height: 150,
-                      borderRadius: 10,
-                      paddingHorizontal: 15,
-                    }}
+                    style={styles.textarea}
                     multiline
                     numberOfLines={10}
                   />
@@ -220,25 +149,12 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                 name="description"
               />
               {errors.description && (
-                <Text
-                  style={{ position: 'absolute', bottom: -25, color: 'red' }}
-                >
-                  Campo requerido.
-                </Text>
+                <Text style={styles.errorText}>Campo requerido.</Text>
               )}
             </View>
 
-            <View style={{ marginBottom: 30 }}>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  fontSize: 18,
-                  fontWeight: '600',
-                  color: '#617c89',
-                }}
-              >
-                Imagen (url)
-              </Text>
+            <View style={styles.rowInputContainer}>
+              <Text style={styles.labelInput}>Imagen (url)</Text>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -247,56 +163,22 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    style={{
-                      borderWidth: 1,
-                      borderColor: '#617c89',
-                      flex: 1,
-                      height: 40,
-                      borderRadius: 10,
-                      paddingHorizontal: 15,
-                    }}
+                    style={styles.input}
                   />
                 )}
                 name="image_url"
               />
               {errors.image_url && (
-                <Text
-                  style={{ position: 'absolute', bottom: -25, color: 'red' }}
-                >
-                  Campo requerido.
-                </Text>
+                <Text style={styles.errorText}>Campo requerido.</Text>
               )}
             </View>
             <View style={{ alignItems: 'center', marginTop: 20 }}>
               <TouchableOpacity
-                style={{
-                  padding: 20,
-                  width: '50%',
-                  borderRadius: 40,
-                  alignItems: 'center',
-                  backgroundColor: '#7692a0',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
-
-                  elevation: 3,
-                }}
+                style={styles.buttonContainer}
                 activeOpacity={0.9}
                 onPress={handleSubmit(onSubmit)}
               >
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: '700',
-                    color: '#ffffff',
-                  }}
-                >
-                  Crear artículo
-                </Text>
+                <Text style={styles.buttonText}>Crear artículo</Text>
               </TouchableOpacity>
             </View>
           </View>
