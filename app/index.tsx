@@ -4,24 +4,20 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
-import { BlogCard, CreateBlog, SearchBar } from '../src/components';
+import {
+  AddBlogButton,
+  BlogCard,
+  CreateBlog,
+  SearchBar,
+} from '../src/components';
 import { useBlogs } from '../src/store/blogs/hooks';
 import { useLocalDataStorage } from '../src/hooks';
 
 const Home = () => {
-  const {
-    getBlogs,
-    blogs,
-    loading,
-    activeSearch,
-    blogSearch,
-    internetService,
-  } = useBlogs();
+  const { getBlogs, blogs, loading, activeSearch, blogSearch } = useBlogs();
   const [modalIsVisible, setModalIsVisible] = useState(false);
   useLocalDataStorage();
 
@@ -48,30 +44,7 @@ const Home = () => {
   return (
     <SafeAreaView style={{ width: Dimensions.get('window').width }}>
       {blogs && <SearchBar />}
-      <View
-        style={{
-          justifyContent: 'center',
-          paddingBottom: 20,
-          alignItems: 'center',
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            borderRadius: 10,
-            backgroundColor: '#7692a0',
-          }}
-          onPress={() => {
-            if (!internetService) return;
-            setModalIsVisible(true);
-          }}
-        >
-          <Text style={{ color: '#ffffff', fontWeight: '500' }}>
-            Agregar artículo
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <AddBlogButton setModalIsVisible={setModalIsVisible} />
       <FlatList
         data={activeSearch ? blogSearch : blogs}
         renderItem={({ item }) => (

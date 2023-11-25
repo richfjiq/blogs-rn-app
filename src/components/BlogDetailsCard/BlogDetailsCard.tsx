@@ -1,5 +1,4 @@
-import { Link, useLocalSearchParams } from 'expo-router';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import {
   View,
   Text,
@@ -9,8 +8,8 @@ import {
   ScrollView,
 } from 'react-native';
 import moment from 'moment';
-import { Blog } from '../interfaces';
-import { useBlogs } from '../store/blogs';
+import { Blog } from '../../interfaces';
+import { useBlogs } from '../../store/blogs';
 
 const BlogDetailsCard: FC = () => {
   const { blog } = useBlogs();

@@ -14,10 +14,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { blogValidation } from '../utils';
-import { useBlogs } from '../store/blogs';
-import { BlogForm } from '../interfaces';
-import Loading from './Loading';
+import { blogValidation } from '../../utils';
+import { useBlogs } from '../../store/blogs';
+import { BlogForm } from '../../interfaces';
+import Loading from '../Loading/Loading';
 
 interface Props {
   modalIsVisible: boolean;
