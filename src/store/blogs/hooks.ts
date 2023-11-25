@@ -9,6 +9,8 @@ import {
   setBlogSearch as setBlogSearchAction,
   setSearchStatus as setSearchStatusAction,
   createBlog as createBlogAction,
+  setBlogsFromLocalStorage as setBlogsFromLocalStorageAction,
+  setInternetStatus as setInternetStatusAction,
 } from './actions';
 import { Blog, BlogForm } from '../../interfaces';
 
@@ -51,6 +53,20 @@ export const useBlogs = () => {
     [dispatch]
   );
 
+  const setBlogsFromLocalStorage = useCallback(
+    (blogs: Blog[]) => {
+      dispatch(setBlogsFromLocalStorageAction(blogs));
+    },
+    [dispatch]
+  );
+
+  const setInternetStatus = useCallback(
+    (connected: boolean) => {
+      dispatch(setInternetStatusAction(connected));
+    },
+    [dispatch]
+  );
+
   return {
     ...blogsState,
     getBlogs,
@@ -58,5 +74,7 @@ export const useBlogs = () => {
     setBlogSearch,
     setSearchStatus,
     createBlog,
+    setBlogsFromLocalStorage,
+    setInternetStatus,
   };
 };

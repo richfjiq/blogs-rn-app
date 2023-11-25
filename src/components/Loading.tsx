@@ -1,4 +1,4 @@
-import { View, Text, Modal, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Modal, Dimensions, ActivityIndicator } from 'react-native';
 import React, { FC } from 'react';
 
 interface Props {

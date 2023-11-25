@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import {
   View,
   Text,
@@ -16,9 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { blogValidation } from '../utils';
 import { useBlogs } from '../store/blogs';
-import { Blog, BlogForm } from '../interfaces';
-import axios from 'axios';
-import { blogsApi } from '../api';
+import { BlogForm } from '../interfaces';
 import Loading from './Loading';
 
 interface Props {
@@ -82,7 +80,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
           padding: 20,
-          paddingTop: 60,
+          paddingTop: Platform.OS === 'ios' ? 60 : 15,
         }}
       >
         <ScrollView>
@@ -104,7 +102,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
               color: '#617c89',
             }}
           >
-            Agregar artíclo
+            Agregar artículo
           </Text>
 
           <View style={{ marginTop: 40 }}>
@@ -211,10 +209,12 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                       borderWidth: 1,
                       borderColor: '#617c89',
                       flex: 1,
-                      height: 40,
+                      height: 150,
                       borderRadius: 10,
                       paddingHorizontal: 15,
                     }}
+                    multiline
+                    numberOfLines={10}
                   />
                 )}
                 name="description"

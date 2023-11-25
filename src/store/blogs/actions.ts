@@ -11,6 +11,8 @@ const GET_BLOG = 'blogs/GET_BLOG';
 const SET_BLOG_SEARCH = 'blogs/SET_BLOG_SEARCH';
 const SET_SEARCH_STATUS = 'blogs/SET_SEARCH_STATUS';
 const CREATE_BLOG = 'blogs/CREATE_BLOG';
+const SET_BLOGS_FROM_LOCAL_STORAGE = 'blogs/SET_BLOGS_FROM_LOCAL_STORAGE';
+const SET_INTERNET_STATUS = 'blogs/SET_INTERNET_STATUS';
 
 export const getBlogs = createAsyncThunk(
   GET_BLOGS,
@@ -57,6 +59,24 @@ export const setSearchStatus = createAction(
   (isActive: boolean) => {
     return {
       payload: isActive,
+    };
+  }
+);
+
+export const setBlogsFromLocalStorage = createAction(
+  SET_BLOGS_FROM_LOCAL_STORAGE,
+  (blogs: Blog[]) => {
+    return {
+      payload: blogs,
+    };
+  }
+);
+
+export const setInternetStatus = createAction(
+  SET_INTERNET_STATUS,
+  (connected: boolean) => {
+    return {
+      payload: connected,
     };
   }
 );

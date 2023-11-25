@@ -5,6 +5,8 @@ import {
   getBlog,
   getBlogs,
   setBlogSearch,
+  setBlogsFromLocalStorage,
+  setInternetStatus,
   setSearchStatus,
 } from './actions';
 import { Blog } from '../../interfaces';
@@ -17,6 +19,7 @@ interface InitialState {
   blog: Blog | null;
   blogSearch: Blog[];
   activeSearch: boolean;
+  internetService: boolean;
 }
 
 const initialState: InitialState = {
@@ -27,6 +30,7 @@ const initialState: InitialState = {
   blog: null,
   blogSearch: [],
   activeSearch: false,
+  internetService: true,
 };
 
 const blogsStore = createSlice({
@@ -77,6 +81,14 @@ const blogsStore = createSlice({
 
     builders.addCase(setSearchStatus, (state, { payload }) => {
       state.activeSearch = payload;
+    });
+
+    builders.addCase(setBlogsFromLocalStorage, (state, { payload }) => {
+      state.blogs = payload;
+    });
+
+    builders.addCase(setInternetStatus, (state, { payload }) => {
+      state.internetService = payload;
     });
   },
 });

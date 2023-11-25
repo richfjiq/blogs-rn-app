@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -12,29 +11,22 @@ import {
 
 import { BlogCard, CreateBlog, SearchBar } from '../src/components';
 import { useBlogs } from '../src/store/blogs/hooks';
-import { useWifiStatus } from '../src/hooks';
+import { useLocalDataStorage } from '../src/hooks';
 
 const Home = () => {
-  useWifiStatus();
-  const { getBlogs, blogs, loading, activeSearch, blogSearch } = useBlogs();
+  const {
+    getBlogs,
+    blogs,
+    loading,
+    activeSearch,
+    blogSearch,
+    internetService,
+  } = useBlogs();
   const [modalIsVisible, setModalIsVisible] = useState(false);
+  useLocalDataStorage();
 
   useEffect(() => {
     getBlogs();
-  }, []);
-
-  const checkLocalStorage = useCallback(async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('blogs');
-      const blogs = JSON.parse(jsonValue ?? '');
-    } catch (error) {
-      console.info(error);
-    }
-    await AsyncStorage.setItem('blogs', JSON.stringify(blogs));
-  }, []);
-
-  useEffect(() => {
-    checkLocalStorage();
   }, []);
 
   if (loading) {
@@ -70,7 +62,10 @@ const Home = () => {
             borderRadius: 10,
             backgroundColor: '#7692a0',
           }}
-          onPress={() => setModalIsVisible(true)}
+          onPress={() => {
+            if (!internetService) return;
+            setModalIsVisible(true);
+          }}
         >
           <Text style={{ color: '#ffffff', fontWeight: '500' }}>
             Agregar artículo
@@ -91,7 +86,9 @@ const Home = () => {
         )}
         keyExtractor={(item) => item._id}
         style={{ padding: 20, paddingTop: 5 }}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{
+          paddingBottom: 120,
+        }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
       />
       <CreateBlog

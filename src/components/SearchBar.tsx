@@ -14,7 +14,13 @@ import { useDebounce } from '../hooks';
 type Keys = 'title' | 'author' | 'description' | '';
 
 const SearchBar: FC = () => {
-  const { blogs, setBlogSearch, setSearchStatus, activeSearch } = useBlogs();
+  const {
+    blogs,
+    setBlogSearch,
+    setSearchStatus,
+    activeSearch,
+    internetService,
+  } = useBlogs();
   const [keySearch, setKeySearch] = useState<Keys>('');
   const [term, setTerm] = useState('');
   const debouncedSearch = useDebounce(term, 300);
@@ -46,6 +52,7 @@ const SearchBar: FC = () => {
       <FontAwesome name="search" size={18} color="#7692a0" />
       <TouchableOpacity
         onPress={() => {
+          if (!internetService) return;
           setSearchStatus(true);
           setKeySearch('author');
         }}
@@ -61,6 +68,7 @@ const SearchBar: FC = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
+          if (!internetService) return;
           setSearchStatus(true);
           setKeySearch('description');
         }}
@@ -78,6 +86,7 @@ const SearchBar: FC = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
+          if (!internetService) return;
           setSearchStatus(true);
           setKeySearch('title');
         }}

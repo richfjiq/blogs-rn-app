@@ -33,7 +33,6 @@ const BlogCard: FC<Props> = ({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
       }}
     >
@@ -45,6 +44,7 @@ const BlogCard: FC<Props> = ({
           alignItems: 'center',
           borderWidth: 1,
           borderColor: '#878585',
+          width: Dimensions.get('window').width - 40,
         }}
       >
         <View
@@ -53,7 +53,7 @@ const BlogCard: FC<Props> = ({
             width:
               Platform.OS === 'ios'
                 ? Dimensions.get('window').width - 40
-                : '100%',
+                : Dimensions.get('window').width,
             padding: 10,
           }}
         >
