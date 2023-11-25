@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,20 +15,20 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { blogValidation } from '../utils';
+import { useBlogs } from '../store/blogs';
+import { Blog, BlogForm } from '../interfaces';
+import axios from 'axios';
+import { blogsApi } from '../api';
+import Loading from './Loading';
 
 interface Props {
   modalIsVisible: boolean;
   closeModal: () => void;
 }
 
-interface BlogForm {
-  title: string;
-  author: string;
-  description: string;
-  image_url?: string;
-}
-
 const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
+  const { createBlog, createLoading } = useBlogs();
+
   const {
     control,
     handleSubmit,
@@ -45,13 +45,22 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
     resolver: yupResolver(blogValidation),
   });
 
-  const onSubmit = (data: BlogForm) => {
-    console.log({ data });
+  const onSubmit = async (data: BlogForm) => {
+    createBlog({
+      title: data.title,
+      author: data.author,
+      description: data.description,
+      image_url: data.image_url,
+    });
+
     resetField('title');
     resetField('author');
     resetField('description');
     resetField('image_url');
-    console.log({ errors });
+
+    setTimeout(() => {
+      closeModal();
+    }, 1500);
   };
 
   const closeForm = () => {
@@ -112,9 +121,6 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
               </Text>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Título"
@@ -155,9 +161,6 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
               </Text>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Autor"
@@ -198,9 +201,6 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
               </Text>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Contenido"
@@ -241,9 +241,6 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
               </Text>
               <Controller
                 control={control}
-                rules={{
-                  required: true,
-                }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     placeholder="Imagen (url)"
@@ -260,7 +257,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
                     }}
                   />
                 )}
-                name="title"
+                name="image_url"
               />
               {errors.image_url && (
                 <Text
@@ -305,6 +302,7 @@ const CreateBlog: FC<Props> = ({ modalIsVisible, closeModal }) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <Loading isVisible={createLoading} />
     </Modal>
   );
 };

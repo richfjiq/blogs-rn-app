@@ -1,10 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getBlog, getBlogs, setBlogSearch, setSearchStatus } from './actions';
+import {
+  createBlog,
+  getBlog,
+  getBlogs,
+  setBlogSearch,
+  setSearchStatus,
+} from './actions';
 import { Blog } from '../../interfaces';
 
 interface InitialState {
   loading: boolean;
+  createLoading: boolean;
   error: boolean;
   blogs: Blog[];
   blog: Blog | null;
@@ -14,6 +21,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   loading: false,
+  createLoading: false,
   error: false,
   blogs: [],
   blog: null,
@@ -41,10 +49,24 @@ const blogsStore = createSlice({
       state.error = true;
     });
 
+    builders.addCase(createBlog.pending, (state) => {
+      state.createLoading = true;
+    });
+
+    builders.addCase(createBlog.fulfilled, (state, { payload }) => {
+      state.createLoading = false;
+      payload as Blog[];
+      state.blogs = payload as Blog[];
+    });
+
+    builders.addCase(createBlog.rejected, (state, { payload }) => {
+      state.createLoading = false;
+      state.error = true;
+    });
+
     builders.addCase(getBlog, (state, { payload }) => {
       state.loading = true;
       const blog = state.blogs.filter((blog) => blog._id === payload)[0];
-      console.log({ blog });
       state.blog = blog;
       state.loading = false;
     });

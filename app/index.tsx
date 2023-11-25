@@ -27,7 +27,6 @@ const Home = () => {
     try {
       const jsonValue = await AsyncStorage.getItem('blogs');
       const blogs = JSON.parse(jsonValue ?? '');
-      console.log({ blogs });
     } catch (error) {
       console.info(error);
     }
@@ -92,7 +91,7 @@ const Home = () => {
         )}
         keyExtractor={(item) => item._id}
         style={{ padding: 20, paddingTop: 5 }}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
         ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
       />
       <CreateBlog

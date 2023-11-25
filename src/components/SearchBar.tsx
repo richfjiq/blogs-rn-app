@@ -19,19 +19,14 @@ const SearchBar: FC = () => {
   const [term, setTerm] = useState('');
   const debouncedSearch = useDebounce(term, 300);
 
-  console.log({ debouncedSearch });
-  console.log({ keySearch });
-
   const searchByTerm = useCallback(() => {
     const search = blogs.filter((blog) => {
-      console.log({ blog });
       if (keySearch === '') return blog;
 
       return blog[keySearch]
         .toLowerCase()
         .includes(debouncedSearch.toLowerCase());
     });
-    console.log({ search });
     setBlogSearch(search);
   }, [debouncedSearch]);
 

@@ -8,8 +8,9 @@ import {
   getBlog as getBlogAction,
   setBlogSearch as setBlogSearchAction,
   setSearchStatus as setSearchStatusAction,
+  createBlog as createBlogAction,
 } from './actions';
-import { Blog } from '../../interfaces';
+import { Blog, BlogForm } from '../../interfaces';
 
 export const useBlogs = () => {
   const blogsState = useAppSelector(
@@ -43,11 +44,19 @@ export const useBlogs = () => {
     [dispatch]
   );
 
+  const createBlog = useCallback(
+    async (blog: BlogForm) => {
+      await dispatch(createBlogAction(blog));
+    },
+    [dispatch]
+  );
+
   return {
     ...blogsState,
     getBlogs,
     getBlog,
     setBlogSearch,
     setSearchStatus,
+    createBlog,
   };
 };
